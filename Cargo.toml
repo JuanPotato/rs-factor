@@ -1,0 +1,6 @@
+[package]
+name = "factors"
+version = "0.1.0"
+authors = ["Hasan Ibraheem <hasantiny@gmail.com>"]
+
+[dependencies]
