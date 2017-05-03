@@ -1,3 +1,5 @@
+extern crate rand;
+
 pub fn trial_factor(n: i64) -> (i64, i64) {
     for s in 2..1 + (n as f64).abs().sqrt().floor() as i64 {
         if n % s == 0 {
@@ -8,23 +10,34 @@ pub fn trial_factor(n: i64) -> (i64, i64) {
     return (1, n)
 }
 
-fn sieve_of_eratosthenes(n: u64) /* -> Vec<u64> */ {
-    let mut numbers = (0..n+1).collect::<Vec<u64>>();
-    numbers[1] = 0;
+pub fn pollard_rho_factor(n: i64) -> (i64, i64) {
+    let g = |x: i64| ((x*x) + 1) % n;
 
-    for i in 2..(n as f64).sqrt().floor() as u64 + 1 {
-        if numbers[i as usize] < 2 {
-            continue;
+    fn gcd(mut m: i64, mut n: i64) -> i64 {
+        while m != 0 {
+            let old_m = m;
+            m = n % m;
+            n = old_m;
         }
 
-        for k in 2 .. n/i + 1 {
-            numbers[(k*i) as usize] = 0;
-        }
-
-        println!("{:?}", i);
+        n.abs()
     }
 
-    println!("{:?}", numbers);
+    let mut x: i64 = rand::random::<u8>() as i64 % 10;
+    let mut y: i64 = x;
+    let mut d: i64 = 1;
+
+    while d == 1 {
+        x = g(x);
+        y = g(g(y));
+        d = gcd((x - y).abs(), n);
+    }
+
+    if d == n { 
+        return (1, n);
+    } else {
+        return (d, n/d);
+    }
 }
 
 
@@ -32,8 +45,12 @@ fn sieve_of_eratosthenes(n: u64) /* -> Vec<u64> */ {
 mod tests {
     use *;
     #[test]
-    fn it_works() {
-        sieve_of_eratosthenes(121);
-        println!("{:?}", trial_factor(-4));
+    fn trial_test() {
+        println!("{:?}", trial_factor(751 * 757));
+    }
+
+    #[test]
+    fn pollard_rho_test() {
+        println!("{:?}", pollard_rho_factor(751 * 757));
     }
 }

@@ -3,7 +3,7 @@
 ### Implemented factoring algorithsm
 
 - [x] Trial division
-- [ ] Wheel factorization
+- [ ] Wheel factorization (This is essentially a sieve, so nah)
 - [ ] Pollard's rho algorithm
 - [ ] Pollard's p − 1 algorithm
 - [ ] Williams' p + 1 algorithm
